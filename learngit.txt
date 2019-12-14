@@ -28,4 +28,8 @@ git reset HEAD readme.txt
 
 9.删除工作区的改动
 git checkout -- readme.txt
+
+10.查看日志
+git log
+git log --pretty=oneline
  */1:
