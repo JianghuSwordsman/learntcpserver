@@ -22,4 +22,10 @@ git status
 
 7.查看修改的内容
 git diff
+
+8.撤出暂存区
+git reset HEAD readme.txt
+
+9.删除工作区的改动
+git checkout -- readme.txt
  */1:
