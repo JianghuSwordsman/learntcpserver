@@ -16,4 +16,10 @@ git init
 touch readme.txt
 git add readme.txt
 git commit -m "write a learngit file"
+
+6.查看git状态
+git status
+
+7.查看修改的内容
+git diff
  */1:
