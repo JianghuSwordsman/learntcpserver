@@ -1,0 +1,19 @@
+/*
+1.安装git
+yum install git 
+
+2.配置git账户
+git config --global user.name "your name"
+git config --global user.email "your email"
+
+3.创建本地目录
+mkdir learngit
+cd learngit
+4.初始化本地git
+git init
+
+5.上传本地文件到配置库
+touch readme.txt
+git add readme.txt
+git commit -m "write a learngit file"
+ */1:
