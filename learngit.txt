@@ -50,3 +50,8 @@ git remote add origin git@github.com:username/learngit
 
 15.向已创建远程地址push
 git push -u origin master
+
+16.克隆远程仓库(git指令要比https方式快)
+git clone git@github.com:michaelliao/gitskills.git
+或
+git clone https://github.com/michaelliao/gitskills.git
