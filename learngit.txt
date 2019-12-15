@@ -1,4 +1,3 @@
-/*
 1.安装git
 yum install git 
 
@@ -41,4 +40,13 @@ git reset --hard commit id
 12.删除
 git rm readme.txt
 git commit -m "delete readme.txt"
- */1:
+
+13.创建github远程仓库
+ssh-keygen -t rsa -C "your email@example.com"
+把.ssh下面的公钥设置到github
+
+14.创建远程仓库的更新地址
+git remote add origin git@github.com:username/learngit
+
+15.向已创建远程地址push
+git push -u origin master
