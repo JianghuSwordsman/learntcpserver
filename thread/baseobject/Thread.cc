@@ -1,0 +1,46 @@
+#include "Thread.h"
+#include <iostream>
+
+namespace wd
+{
+
+Thread::Thread(ThreadCallback cb)
+   :pthId_(0),
+    isRunning_(false),
+    cb_(cb)
+{
+   std::cout<<"Thread::Thread"<<std::endl;
+}
+
+void Thread::start()
+{
+    pthread_create(&pthId_,NULL,threadFunc,this);
+    isRunning_ = true;
+}
+
+void Thread::stop()
+{
+    pthread_join(pthId_,NULL);
+    isRunning_ = false;
+}
+void *Thread::threadFunc(void *arg)
+{
+    Thread * pThread = static_cast<Thread *>(arg);
+    if(pThread != NULL)
+    {
+        //std::cout << "hello" << std::endl;
+        pThread->cb_();
+        return pThread;
+    }
+    return NULL;
+}
+Thread::~Thread()
+{
+    if(isRunning_)
+    {
+        pthread_detach(pthId_);
+    }
+    std::cout<<"Thread::~Thread"<<std::endl;
+
+}
+}//end of namespace wd
