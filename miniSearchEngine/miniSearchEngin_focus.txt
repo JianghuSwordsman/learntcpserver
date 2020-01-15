@@ -1,0 +1,116 @@
+
+
+1. 网页的表示 ripepage.lib －－vector<MyPage>
+	
+	提取文本信息：title, url, content
+    ____________________________________
+   |                                    |
+   |	<doc>                           |
+   |	   <docid>...</docid>           |
+   |	   <url>...</url>               |
+   |	   <title>...</title>           |
+   |	   <content>...</content>       |
+   |	</doc>                          |
+   |    <doc>                           |
+   |      ...                           |
+   |	</doc>                          |
+   |    ...                             |
+   |____________________________________| 
+
+	string txt = "<doc><docid>" + docid + "</docid>" + "<url>" + url
+	            + ... + "</doc>";
+
+	
+	std::ofstream ofs;
+	ofs << txt;
+	
+	ofs.tellg();// offset
+	txt.size();//length
+
+
+
+   在创建网页库的过程中，就可以得到 offset.lib
+
+   offset.lib中的内容为(每一行):  
+   
+    ____________________________
+   |                            |
+   |  docid --> offset  length  |
+   |____________________________|
+
+	seek(, )
+
+
+2. 网页的去重，两种方法
+    1) topK的方法(对网页分词，抽象出一个分词类 MySplit，并去停用词)
+    2) 通过寻找公共子序列 LCS
+
+    词语 －〉词频   map<string, int>
+
+    抽象出一个MyPage类,将所有的网页存入到一个vector<Page>里面去，
+
+    通过去重之后，就可以得到一个新的new_offset.lib
+
+
+3. 建立倒排索引表invertindex.lib
+
+	std::map
+	std::unordered_map
+	__gnu__cxx::hash_map 
+
+	hash_map<string, set<pair<int, double> > >;
+    _______________________ __________________________________
+   |                                                         |
+   | word -> docid1 freq1 weight1, docid2 freq2 weight2, ... |
+   |_________________________________________________________|
+   
+   重点和难点就是weight的计算,要搞清楚几个概念：
+	N:总文章数。
+	 
+	tf : term frequency, 某个词在文章中出现的次数(某个词在当前篇文档中中的词频)
+	df : document frequency, 某个词在所有文章中出现的次数(在 多少篇文章中出现)
+	idf: inverse document frequency, 逆文档频率，表示该词对于该篇文章的重要性的一个系数
+		
+		idf = log(N/df)
+
+	词的特征权重(该词对于该篇文章的重要性)的计算：
+		w = tf * idf   
+
+   然后要进行归一化处理：
+
+	w' = w /sqrt(w1^2 + w2^2 +...+ wn^2)
+
+	w' 才是我们真正需要存储下来的权重值weight
+
+参考  http://www.ruanyifeng.com/blog/2013/03/tf-idf.html
+
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+4. 读取配置文件
+   1) ripepage.lib路径
+   2) offset.lib路径
+   3) invertindex.lib路径
+   4) 分词库路径
+   5) 服务器 IP, port
+
+
+5. 余弦相似度的计算(查询到的网页进行排序)
+
+   步骤：
+   1) 对于查询的关键词，要把它们当作成一篇网页，计算出每个关键词的权重值
+
+   2) 再通过倒排索引表invertindex.lib去寻找包含所有关键字的网页
+
+   3) 对找到的网页进行排序--余弦相似度的计算
+	X = [x1, x2, x3, ...]
+	Y = [y1, y2, y3, ...]
+	
+	cos@ = (X * Y) / (|X| * |Y|)
+	
+   4) 将结果封装成json字符串发送到前端
+
+
+6. jsoncpp开源库---->学习其安装和使用
+
+	http://www.cnblogs.com/kex1n/archive/2011/12/02/2272328.html
+
+ 

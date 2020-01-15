@@ -1,0 +1,13 @@
+#include "DealPage.h"
+#include <string>
+
+int main()    
+{
+    std::string pathstr = "../conf/my.conf";
+    DealPage dealpage(pathstr);
+    dealpage.createPage();
+
+    return 0;
+}
+
+
